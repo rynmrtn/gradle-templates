@@ -5,7 +5,17 @@ apply plugin: 'war'
 
 group = '${projectGroup}'
 
+if (System.properties['isWeblogic']) {
+    apply from: 'weblogic.gradle'
+}
+
+// Add deployWar task for Tomcat deployments
+ant.importBuild 'ant-builds/tomcat/targets.xml'
+
 dependencies {
 
     testCompile 'junit:junit:4.11'
 }
+
+ant.properties['deployment.war.name']='${projectGroup}'
+ant.properties['deployment.war.file.path']=war.archivePath

@@ -96,19 +96,20 @@ class JavaTemplatesPlugin implements Plugin<Project> {
 					'build.gradle' template: '/templates/java/build.gradle.tmpl', projectGroup: projectGroup
 					'gradle.properties' content: "version=$projectVersion", append: true
                     'ant-build' {
-                        'weblocic' {
-                            'weblogic.xml' template: 'templates/java/ant-build/weblogic/weblogic-xml.tmpl'
-                            'properties.xml' template: 'templates/java/ant-build/weblogic/properties-xml.tmpl'
+                        'weblogic' {
+                            'weblogic.xml' template: '/templates/java/ant-builds/weblogic/weblogic-xml.tmpl'
+                            'properties.xml' template: '/templates/java/ant-builds/weblogic/properties-xml.tmpl'
                         }
                         'tomcat' {
                             'build-lib' {
-                                'catalina-ant.jar' template: 'templates/java/ant-build/tomcat/catalina-ant.jar'
-                                'ml-ant-http-1.1.3.jar' template: 'templates/java/ant-build/tomcat/ml-ant-http-1.1.3.jar'
+                                'catalina-ant.jar' file: '/templates/java/ant-builds/tomcat/catalina-ant.jar'
+                                'ml-ant-http-1.1.3.jar' file: '/templates/java/ant-builds/tomcat/ml-ant-http-1.1.3.jar'
                             }
-                            'tomcat.xml' template: 'templates/java/ant-build/tomcat/tomcat-xml.tmpl', projectGroup: projectGroup
-                            'properties.xml' template: 'templates/java/ant-build/tomcat/properties-xml.tmpl'
+                            'targets.xml' template: '/templates/java/ant-builds/tomcat/targets-xml.tmpl'
+                            'properties.xml' template: '/templates/java/ant-builds/tomcat/properties-xml.tmpl', projectGroup: projectGroup
                         }
-                    } 'weblogic.gradle' template: ''
+                    }
+                    'weblogic.gradle' template: '/templates/java/weblogic.gradle.tmpl'
 				}
 			} else {
 				println 'No project name provided.'

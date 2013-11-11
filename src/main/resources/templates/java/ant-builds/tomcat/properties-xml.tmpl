@@ -9,7 +9,7 @@
 
         <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
                 <classpath>
-                        <fileset dir="${tomcat.lib}">
+                        <fileset dir="\${tomcat.lib}">
                                 <include name="*.jar" />
                         </fileset>
                 </classpath>

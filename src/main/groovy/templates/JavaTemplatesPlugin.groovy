@@ -95,6 +95,20 @@ class JavaTemplatesPlugin implements Plugin<Project> {
 				ProjectTemplate.fromRoot(projectName) {
 					'build.gradle' template: '/templates/java/build.gradle.tmpl', projectGroup: projectGroup
 					'gradle.properties' content: "version=$projectVersion", append: true
+                    'ant-build' {
+                        'weblocic' {
+                            'weblogic.xml' template: 'templates/java/ant-build/weblogic/weblogic-xml.tmpl'
+                            'properties.xml' template: 'templates/java/ant-build/weblogic/properties-xml.tmpl'
+                        }
+                        'tomcat' {
+                            'build-lib' {
+                                'catalina-ant.jar' template: 'templates/java/ant-build/tomcat/catalina-ant.jar'
+                                'ml-ant-http-1.1.3.jar' template: 'templates/java/ant-build/tomcat/ml-ant-http-1.1.3.jar'
+                            }
+                            'tomcat.xml' template: 'templates/java/ant-build/tomcat/tomcat-xml.tmpl', projectGroup: projectGroup
+                            'properties.xml' template: 'templates/java/ant-build/tomcat/properties-xml.tmpl'
+                        }
+                    } 'weblogic.gradle' template: ''
 				}
 			} else {
 				println 'No project name provided.'

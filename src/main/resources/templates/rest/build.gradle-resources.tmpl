@@ -1,0 +1,29 @@
+
+
+if (System.properties['isWeblogic']) {
+    apply from: 'weblogic.gradle'
+}
+
+dependencies {
+	compile project(':${dataLayerProject}')
+
+	compile "javax.servlet:jstl:1.2"
+
+	runtime "rome:rome:0.9"
+
+	if (System.properties['isWeblogic']) {
+		providedRuntime "xerces:xerces:2.4.0"
+		providedRuntime "xerces:xercesImpl:2.9.1"
+		providedRuntime "stax:stax-api:1.0.1"
+		providedRuntime "javax.xml.stream:stax-api:1.0-2"
+		providedRuntime "javax.xml.bind:jaxb-api:2.2.2"
+	} else {
+		runtime "xerces:xerces:2.4.0"
+		runtime "xerces:xercesImpl:2.9.1"
+	}
+}
+
+
+ant.importBuild 'ant-builds/tomcat/targets.xml'
+ant.properties['deployment.war.name']='${resourceContext}'
+ant.properties['deployment.war.file.path']=war.archivePath

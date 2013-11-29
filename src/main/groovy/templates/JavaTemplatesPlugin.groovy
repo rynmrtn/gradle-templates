@@ -100,6 +100,68 @@ class JavaTemplatesPlugin implements Plugin<Project> {
 				println 'No project name provided.'
 			}
 		}
+
+        project.task('createResourceProject', group: TemplatesPlugin.group,
+                description: 'Creates a Java Project to support the deployment of REST resources') << {
+
+            def projectName = props['projectName'] ?: TemplatesPlugin.prompt('Project Name: ')
+            if(projectName) {
+                String baseDirectoryName = projectName.toLowerCase()+'-resources'
+                String resourcesDirectory = projectName+"Resources"
+                String dataLayerDirectory = projectName+"DataLayer"
+
+                // TODO: support gradle-wrapper, resource integration tests, versioning, ICD generation, findbugs
+                ProjectTemplate.fromRoot(baseDirectoryName) {
+                    "$resourcesDirectory" {
+                        'build.gradle' template: '/templates/rest/build.gradle-resources.tmpl', dataLayerProject: dataLayerDirectory, resourceContext: resourcesDirectory
+                        'weblogic.gradle' template: '/templates/rest/weblogic.gradle.tmpl'
+                        'src' {
+                            'main' {
+                                'java' {}
+                                'resources' {}
+                            }
+                            'test' {
+                                'java' {}
+                                'resources' {}
+                            }
+                        }
+                    }
+                    "$dataLayerDirectory" {
+                        'build.gradle' template: '/templates/rest/build.gradle-datalayer.tmpl'
+                        'src' {
+                            'main' {
+                                'java' {}
+                                'resources' {}
+                            }
+                            'test' {
+                                'java' {}
+                                'resources' {}
+                            }
+                        }
+                    }
+                    '.gitignore' template: '/templates/rest/gitignore.tmpl'
+                    'build.gradle' template: '/templates/rest/build.gradle.tmpl'
+                    'ant-build' {
+                        'weblogic' {
+                            'weblogic.xml' template: '/templates/rest/ant-builds/weblogic/weblogic-xml.tmpl'
+                            'properties.xml' template: '/templates/rest/ant-builds/weblogic/properties-xml.tmpl'
+                        }
+                        'tomcat' {
+                            'build-lib' {
+                                'catalina-ant.jar' file: '/templates/rest/ant-builds/tomcat/catalina-ant.jar'
+                                'ml-ant-http-1.1.3.jar' file: '/templates/rest/ant-builds/tomcat/ml-ant-http-1.1.3.jar'
+                            }
+                            'targets.xml' template: '/templates/rest/ant-builds/tomcat/targets-xml.tmpl'
+                            'properties.xml' template: '/templates/rest/ant-builds/tomcat/properties-xml.tmpl', urlContext: resourcesDirectory
+                        }
+                    }
+                }
+
+            } else {
+                println 'You must provide a project name to proceed.'
+            }
+        }
+
 		project.task('exportJavaTemplates', group: TemplatesPlugin.group,
 				description: 'Exports the default java template files into the current directory.') << {
 			def _ = '/templates/java'

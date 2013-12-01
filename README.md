@@ -53,6 +53,7 @@ Entering `gradle tasks` will show you the available `Templates` tasks:
 	createGroovyProject - Creates a new Gradle Groovy project in a new directory named after your project.
 	createJavaClass - Creates a new Java class in the current project.
 	createJavaProject - Creates a new Gradle Java project in a new directory named after your project.
+	createResourceProject - Creates a Java Project to support the deployment of REST resources
 	createScalaClass - Creates a new Scala class in the current project.
 	createScalaObject - Creates a new Scala object in the current project.
 	createScalaProject - Creates a new Gradle Scala project in a new directory named after your project.
